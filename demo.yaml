@@ -1,0 +1,59 @@
+resources:
+  - type: compute.v1.instance
+    name: server-1
+    properties:
+      zone: us-central1-f
+      machineType: projects/first-gcp-project-281014/zones/us-central1-f/machineTypes/f1-micro
+      disks:
+        - deviceName: boot
+          type: PERSISTENT
+          boot: true
+          autoDelete: true
+          initializeParams:
+            sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-9
+      networkInterfaces:
+        - network: $(ref.network-1.selfLink)
+          subnetwork: $(ref.subnet-a.selfLink)
+          accessConfigs:
+            - name: External NAT
+              type: ONE_TO_ONE_NAT
+  - type: compute.v1.network
+    name: network-1
+    properties:
+      autoCreateSubnetworks: false
+  - type: compute.v1.subnetwork
+    name: subnet-a
+    properties:
+      ipCidrRange: 10.0.1.0/24
+      network: $(ref.network-1.selfLink)
+      privateIpGoogleAccess: false
+      region: us-central1
+  - type: compute.v1.instance
+    name: server-2
+    properties:
+      zone: us-east1-b
+      machineType: projects/first-gcp-project-281014/zones/us-east1-b/machineTypes/f1-micro
+      disks:
+        - deviceName: boot
+          type: PERSISTENT
+          boot: true
+          autoDelete: true
+          initializeParams:
+            sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-9
+      networkInterfaces:
+        - network: $(ref.network-2.selfLink)
+          subnetwork: $(ref.subnet-b.selfLink)
+          accessConfigs:
+            - name: External NAT
+              type: ONE_TO_ONE_NAT
+  - type: compute.v1.network
+    name: network-2
+    properties:
+      autoCreateSubnetworks: false
+  - type: compute.v1.subnetwork
+    name: subnet-b
+    properties:
+      ipCidrRange: 10.0.2.0/24
+      network: $(ref.network-2.selfLink)
+      privateIpGoogleAccess: false
+      region: us-east1

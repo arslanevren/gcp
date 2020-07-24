@@ -1,0 +1,15 @@
+imports:
+  - path: instance_template1.jinja
+  - path: network_template1.jinja
+  - path: instance_template2.jinja
+  - path: network_template2.jinja
+
+resources:
+  - name: server-1
+    type: instance_template1.jinja
+  - name: network-1
+    type: network_template1.jinja
+  - name: server-2
+    type: instance_template2.jinja
+  - name: network-2
+    type: network_template2.jinja

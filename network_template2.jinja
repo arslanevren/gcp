@@ -1,0 +1,20 @@
+resources:
+  - type: compute.v1.network
+    name: network-2
+    properties:
+      autoCreateSubnetworks: false
+  - type: compute.v1.subnetwork
+    name: subnet-b
+    properties:
+      ipCidrRange: 10.0.2.0/24
+      network: $(ref.network-2.selfLink)
+      privateIpGoogleAccess: false
+      region: us-east1
+  - type: compute.v1.firewall
+    name: ssh-network-2
+    properties: 
+      network: $(ref.network-2.selfLink)
+      sourceRanges: ["0.0.0.0/0"]
+      allowed:
+        - IPProtocol: TCP
+          ports: [22]
